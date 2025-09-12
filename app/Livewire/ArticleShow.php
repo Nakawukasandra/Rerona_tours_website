@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 
 class ArticleShow extends Component
 {
@@ -15,7 +16,7 @@ class ArticleShow extends Component
 
         $this->article = DB::table('articles_tips')
             ->where('slug', $slug)
-            ->where('status', 'PUBLISHED')
+            ->where('published', 1) // Changed from 'status' to 'published'
             ->first();
 
         if (!$this->article) {

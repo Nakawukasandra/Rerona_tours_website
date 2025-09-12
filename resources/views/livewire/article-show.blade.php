@@ -7,14 +7,18 @@
 
         <!-- Article Header -->
         <article class="bg-white">
-            @if($article->image)
-                <img src="{{ Voyager::image($article->image) }}" alt="{{ $article->title }}" class="w-full h-64 object-cover rounded-lg mb-6">
+            @if($article->featured_image)
+                <img src="{{ Voyager::image($article->featured_image) }}" alt="{{ $article->title }}" class="w-full h-64 object-cover rounded-lg mb-6">
             @endif
 
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ $article->title }}</h1>
 
             <div class="text-gray-600 mb-6">
                 <time datetime="{{ $article->created_at }}">{{ date('M d, Y', strtotime($article->created_at)) }}</time>
+                @if($article->category)
+                    <span class="mx-2">•</span>
+                    <span class="text-green-600">{{ $article->category }}</span>
+                @endif
             </div>
 
             @if($article->excerpt)
@@ -22,8 +26,19 @@
             @endif
 
             <div class="prose max-w-none">
-                {!! $article->body !!}
+                {!! $article->content !!}
             </div>
+
+            @if($article->tags && $article->tags !== '[]')
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <h3 class="text-sm font-medium text-gray-500 mb-2">Tags:</h3>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach(json_decode($article->tags) as $tag)
+                            <span class="bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full">{{ $tag }}</span>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </article>
 
         <!-- Related Articles (Optional) -->

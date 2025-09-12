@@ -19,63 +19,40 @@ use App\Livewire\ArticleShow;
 Route::get('/', HomePage::class)->name('home');
 
 // Tours route
-Route::get('/tours', function() {
-    $tours = \App\Models\Tour::all(); // or however you want to fetch tours
-    return view('tours.index', compact('tours'));
-})->name('tours');
+Route::get('/tours', \App\Livewire\Tours\Index::class)->name('tours');
 
-// Booking route
-Route::get('/booking', function() {
-    return view('booking.index');
-})->name('booking');
+// Booking route - Updated to use Livewire component
+Route::get('/booking', \App\Livewire\Booking\Index::class)->name('booking');
 
 // Destinations route
-Route::get('/destinations', function() {
-    $destinations = \App\Models\Destination::where('status', 'active')->get();
-    return view('destinations.index', compact('destinations'));
-})->name('destinations');
+Route::get('/destinations', \App\Livewire\Destinations\Index::class)->name('destinations');
 
-// About Us route
-Route::get('/about', function() {
-    return view('pages.about');
-})->name('about');
+
+// About route - Using Livewire component
+Route::get('/about', \App\Livewire\Pages\About::class)->name('about');
 
 // Contact route
-Route::get('/contact', function() {
-    return view('pages.contact');
-})->name('contact');
+Route::get('/contact', \App\Livewire\Pages\Contact::class)->name('contact');
 
-// FAQs route
-Route::get('/faqs', function() {
-    $faqs = \App\Models\Faq::where('status', 'active')->orderBy('order')->get();
-    return view('pages.faqs', compact('faqs'));
-})->name('faqs');
+// FAQs route - Updated to use Livewire component
+Route::get('/faqs', \App\Livewire\Pages\Faq::class)->name('faqs');
 
-// Gallery route
-Route::get('/gallery', function() {
-    $galleries = \App\Models\Gallery::where('status', 'active')->latest()->get();
-    return view('pages.gallery', compact('galleries'));
-})->name('gallery');
+// Gallery route - Updated to use Livewire component
+Route::get('/gallery', \App\Livewire\Pages\Gallery::class)->name('gallery');
 
 // Blog routes
-Route::get('/blog', function() {
-    $posts = \App\Models\Post::published()->latest()->get();
-    return view('blog.index', compact('posts'));
-})->name('blog');
-
+Route::get('/blog', App\Livewire\Blog\Index::class)->name('blog');
 Route::get('/blog/{slug}', ArticleShow::class)->name('blog.show');
 
+
 // Services route
-Route::get('/services', function() {
-    $services = \App\Models\Service::where('status', 'active')->get();
-    return view('services.index', compact('services'));
-})->name('services');
+Route::get('/services', App\Livewire\Services\Index::class)->name('services');
 
 // Shop route
-Route::get('/shop', function() {
-    $products = \App\Models\Product::where('status', 'active')->get();
-    return view('shop.index', compact('products'));
-})->name('shop');
+Route::get('/shop', App\Livewire\Shop\Index::class)->name('shop');
+
+// Cart route - ADD THIS LINE
+Route::get('/cart', \App\Livewire\Cart\Index::class)->name('cart');
 
 // Search route (for the hero section search form)
 Route::get('/search', function() {
@@ -114,10 +91,6 @@ Route::get('/search', function() {
     return view('search.results', compact('tours', 'destination', 'month', 'sort'));
 })->name('search');
 
-// Pages route (general pages handler if needed)
-Route::get('/pages', function() {
-    return redirect()->route('about');
-})->name('pages');
 
 // Voyager Admin Routes
 Route::group(['prefix' => 'admin'], function () {
