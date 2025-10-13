@@ -1,44 +1,8 @@
-<div class="min-h-screen bg-gray-50">
-    <!-- Header Section -->
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
-        <div class="container mx-auto px-4">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h1>
-                <p class="text-xl text-blue-100 max-w-2xl mx-auto">
-                    Find answers to common questions about Rorena Tours and our services
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 py-12">
-        <!-- Category Filter -->
-        @if($categories->count() > 0)
-            <div class="mb-8">
-                <div class="flex flex-wrap gap-2 justify-center">
-                    <button
-                        wire:click="filterByCategory('all')"
-                        class="px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200
-                               {{ $selectedCategory === 'all' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }}
-                               border border-gray-300 shadow-sm">
-                        All Questions
-                    </button>
-                    @foreach($categories as $category)
-                        <button
-                            wire:click="filterByCategory('{{ $category }}')"
-                            class="px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 capitalize
-                                   {{ $selectedCategory === $category ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }}
-                                   border border-gray-300 shadow-sm">
-                            {{ str_replace(['_', '-'], ' ', $category) }}
-                        </button>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        <!-- FAQ Items -->
-        <div class="max-w-4xl mx-auto">
+<!-- Main Content Area with Sidebar -->
+<div class="container mx-auto px-4 py-12">
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Main FAQ Content -->
+        <div class="lg:w-2/3">
             @if($faqs->count() > 0)
                 <div class="space-y-4">
                     @foreach($faqs as $faq)
@@ -46,103 +10,117 @@
                             <!-- Question -->
                             <button
                                 wire:click="toggleFaq({{ $faq->id }})"
-                                class="w-full px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset
-                                       hover:bg-gray-50 transition-colors duration-200">
-                                <div class="flex justify-between items-center">
-                                    <div class="flex-1 pr-4">
-                                        <h3 class="text-lg font-semibold text-gray-900">
-                                            {{ $faq->question }}
-                                        </h3>
-                                        @if($faq->category)
-                                            <span class="inline-block mt-2 px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full capitalize">
-                                                {{ str_replace(['_', '-'], ' ', $faq->category) }}
-                                            </span>
-                                        @endif
+                                class="w-full px-6 py-4 text-left focus:outline-none hover:bg-gray-50 transition-colors duration-200">
+                                <div class="flex justify-between items-center gap-4">
+                                    <div class="flex items-center flex-1 min-w-0">
+                                        <div class="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-lg font-semibold text-gray-900 break-words">{{ $faq->question }}</h3>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <svg
-                                            class="w-5 h-5 text-gray-500 transition-transform duration-200
-                                                   {{ $openFaq === $faq->id ? 'transform rotate-180' : '' }}"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </div>
+                                    <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 flex-shrink-0
+                                               {{ $openFaq === $faq->id ? 'transform rotate-180' : '' }}"
+                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
                                 </div>
                             </button>
 
                             <!-- Answer -->
-                            <div class="transition-all duration-300 ease-in-out {{ $openFaq === $faq->id ? 'block' : 'hidden' }}">
+                            @if($openFaq === $faq->id)
                                 <div class="px-6 pb-4 pt-2 border-t border-gray-100 bg-gray-50">
                                     <div class="text-gray-700 leading-relaxed">
                                         {!! nl2br(e($faq->answer)) !!}
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>
             @else
-                <!-- No FAQs Found -->
-                <div class="text-center py-12">
-                    <div class="bg-white rounded-lg shadow-md p-8">
-                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                            </path>
-                        </svg>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">No FAQs Found</h3>
-                        <p class="text-gray-600">
-                            @if($selectedCategory !== 'all')
-                                No questions found for the "{{ str_replace(['_', '-'], ' ', $selectedCategory) }}" category.
-                            @else
-                                No frequently asked questions are currently available.
-                            @endif
-                        </p>
-                    </div>
+                <div class="bg-white rounded-lg shadow-md p-8 text-center">
+                    <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                        </path>
+                    </svg>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No FAQs Found</h3>
+                    <p class="text-gray-600">No frequently asked questions are currently available.</p>
                 </div>
             @endif
         </div>
 
-        <!-- Contact Section -->
-        <div class="mt-16 bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto text-center">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Still Have Questions?</h2>
-            <p class="text-gray-600 mb-6">
-                Can't find what you're looking for? Our friendly team is here to help you plan your perfect tour.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="mailto:info@rorenatours.com"
-                   class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg
-                          hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                        </path>
-                    </svg>
-                    Email Us
-                </a>
-                <a href="{{ route('contact') }}"
-                   class="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg
-                          hover:bg-green-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
-                        </path>
-                    </svg>
-                    Contact Us
-                </a>
-            </div>
-        </div>
-    </div>
+        <!-- Sidebar -->
+        <div class="lg:w-1/3">
+            <!-- Can't Find Answer? Ask Us -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Can't Find Answer? Ask Us</h3>
 
-    <!-- Loading State -->
-    <div wire:loading class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-6 shadow-xl">
-            <div class="flex items-center space-x-3">
-                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-                <span class="text-gray-700 font-medium">Loading...</span>
+                @if(session('message'))
+                    <div class="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-md text-sm">
+                        {{ session('message') }}
+                    </div>
+                @endif
+
+                <form wire:submit.prevent="sendMessage" class="space-y-4">
+                    <!-- Full Name -->
+                    <div>
+                        <label for="full_name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <input type="text" id="full_name" wire:model="form.full_name" placeholder="Full Name"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('form.full_name') border-red-500 @enderror">
+                        @error('form.full_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Email Address -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="email" wire:model="form.email" placeholder="sample@yourcompany.com"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('form.email') border-red-500 @enderror">
+                        @error('form.email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" id="phone" wire:model="form.phone"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('form.phone') border-red-500 @enderror">
+                        @error('form.phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Interested In -->
+                    <div>
+                        <label for="interest" class="block text-sm font-medium text-gray-700 mb-1">Interested In</label>
+                        <select id="interest" wire:model="form.interest"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                            <option value="">Select an option</option>
+                            <option value="safari">Safari Tours</option>
+                            <option value="cultural">Cultural Tours</option>
+                            <option value="adventure">Adventure Tours</option>
+                            <option value="wildlife">Wildlife Tours</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Number of Persons -->
+                    <div>
+                        <label for="persons" class="block text-sm font-medium text-gray-700 mb-1">Number of Person</label>
+                        <input type="number" id="persons" wire:model="form.persons" placeholder="1 person" min="1"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('form.persons') border-red-500 @enderror">
+                        @error('form.persons') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Send Button -->
+                    <button type="submit"
+                            wire:loading.attr="disabled"
+                            class="w-full bg-green-600 text-white py-3 px-4 rounded-md font-medium hover:bg-green-700 transition-colors duration-200 disabled:bg-gray-400">
+                        <span wire:loading.remove>Send Message</span>
+                        <span wire:loading>Sending...</span>
+                    </button>
+                </form>
             </div>
+
         </div>
     </div>
 </div>

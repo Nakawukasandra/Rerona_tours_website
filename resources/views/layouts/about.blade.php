@@ -6,6 +6,7 @@
     <title>About Us - Rorena Tours</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @livewireStyles
     <style>
         html {
             scroll-behavior: smooth;
@@ -76,7 +77,6 @@
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(34, 197, 94, 0.1));
         }
 
-        /* Contact form with transparent background */
         .contact-form {
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(15px);
@@ -143,233 +143,87 @@
 </head>
 
 <body class="font-sans antialiased bg-black text-white overflow-x-hidden bg-fixed-main">
-    <!-- Hero Section -->
-    <section class="relative h-screen">
-        <!-- Hero Background Image -->
-        <div class="absolute inset-0">
-            <img src="/images/waterfall.jpg" alt="Water fall" class="w-full h-full object-cover">
-        </div>
-        <!-- Overlay -->
-        <div class="absolute inset-0 hero-overlay"></div>
+    <!-- Navigation Bar -->
+    <nav class="relative z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center">
+                        <img src="/images/logo.png" alt="Rorena Tours" class="h-10 w-10 rounded-full">
+                    </a>
+                </div>
 
-        <!-- Navigation Bar -->
-        <nav class="relative z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center py-4">
-                    <div class="flex items-center">
-                        <a href="/" class="flex items-center">
-                            <img src="/images/logo.png" alt="Rorena Tours" class="h-10 w-10 rounded-full">
-                        </a>
-                    </div>
+                <div class="hidden lg:flex items-center space-x-6">
+                    <a href="/" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Home</a>
+                    <a href="/tours" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Tours</a>
+                    <a href="/booking" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Booking</a>
+                    <a href="/destinations" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Destination</a>
 
-                    <div class="hidden lg:flex items-center space-x-6">
-                        <a href="/" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Home</a>
-                        <a href="/tours" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Tours</a>
-                        <a href="/booking" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Booking</a>
-                        <a href="/destinations" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Destination</a>
-
-                        <!-- Pages Dropdown -->
-                        <div class="relative" x-data="{ dropdownOpen: false }">
-                            <button @click="dropdownOpen = !dropdownOpen" class="text-white hover:text-green-400 px-3 py-2 font-medium flex items-center transition-colors">
-                                Pages
-                                <svg class="ml-1 h-4 w-4 transform transition-transform" :class="dropdownOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            <div x-show="dropdownOpen" @click.away="dropdownOpen = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg py-2 w-48 z-50">
-                                <a href="/about" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">About Us</a>
-                                <a href="/contact" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Contact Us</a>
-                                <a href="/faqs" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">FAQs</a>
-                                <a href="/gallery" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Gallery</a>
-                            </div>
-                        </div>
-
-                        <a href="/blog" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Blog</a>
-                        <a href="/services" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Our Services</a>
-                        <a href="/shop" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Shop</a>
-
-                        <!-- Cart Icon -->
-                        <a href="/cart" class="text-white hover:text-green-400 p-2 transition-colors relative">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m2.6 8L8 21h8M9 19a2 2 0 100-4 2 2 0 000 4zm10 0a2 2 0 100-4 2 2 0 000 4z"></path>
-                            </svg>
-                            <span class="absolute -top-1 -right-1 bg-green-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
-                        </a>
-                    </div>
-
-                    <!-- Mobile menu button -->
-                    <div class="lg:hidden flex items-center">
-                        <button @click="open = !open" class="text-white hover:text-green-400 transition-colors">
-                            <svg class="h-6 w-6" :class="open ? 'hidden' : 'block'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                            </svg>
-                            <svg class="h-6 w-6" :class="open ? 'block' : 'hidden'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    <!-- Pages Dropdown -->
+                    <div class="relative" x-data="{ dropdownOpen: false }">
+                        <button @click="dropdownOpen = !dropdownOpen" class="text-white hover:text-green-400 px-3 py-2 font-medium flex items-center transition-colors">
+                            Pages
+                            <svg class="ml-1 h-4 w-4 transform transition-transform" :class="dropdownOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
+                        <div x-show="dropdownOpen" @click.away="dropdownOpen = false" x-transition class="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg py-2 w-48 z-50">
+                            <a href="/about" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">About Us</a>
+                            <a href="/contact" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Contact Us</a>
+                            <a href="/faqs" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">FAQs</a>
+                            <a href="/gallery" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Gallery</a>
+                        </div>
                     </div>
+
+                    <a href="/blog" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Blog</a>
+                    <a href="/services" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Our Services</a>
+                    <a href="/shop" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Shop</a>
+
+                    <!-- Cart Icon -->
+                    <a href="/cart" class="text-white hover:text-green-400 p-2 transition-colors relative">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m2.6 8L8 21h8M9 19a2 2 0 100-4 2 2 0 000 4zm10 0a2 2 0 100-4 2 2 0 000 4z"></path>
+                        </svg>
+                        <span class="absolute -top-1 -right-1 bg-green-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
+                    </a>
                 </div>
 
-                <!-- Mobile Menu -->
-                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-1" class="lg:hidden bg-white/95 backdrop-blur-sm mt-2 rounded-lg">
-                    <div class="px-2 pt-2 pb-3 space-y-1">
-                        <a href="/" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Home</a>
-                        <a href="/tours" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Tours</a>
-                        <a href="/booking" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Booking</a>
-                        <a href="/destinations" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Destination</a>
-                        <a href="/about" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">About</a>
-                        <a href="/contact" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Contact</a>
-                        <a href="/faqs" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">FAQs</a>
-                        <a href="/gallery" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Gallery</a>
-                        <a href="/blog" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Blog</a>
-                        <a href="/services" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Our Services</a>
-                        <a href="/shop" class="block px-3 py-2 text-green-600 bg-green-50 rounded transition-colors">Shop</a>
-                    </div>
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center">
+                    <button @click="open = !open" class="text-white hover:text-green-400 transition-colors">
+                        <svg class="h-6 w-6" :class="open ? 'hidden' : 'block'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <svg class="h-6 w-6" :class="open ? 'block' : 'hidden'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
-        </nav>
 
-        <!-- Hero Content -->
-        <div class="relative z-10 flex items-center justify-center h-full">
-            <div class="text-center text-white max-w-4xl mx-auto px-4">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                    Making it real
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
-                    We are the leading tours and safari company giving you an exceptionally new experience
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Content Section -->
-    <section class="relative min-h-screen">
-        <div class="absolute inset-0 bg-black"></div>
-        <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-            <!-- Main Heading -->
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-12 leading-tight">
-                The adventure you will have is a<br>
-                life time memory that will you<br>
-                make want you more
-            </h2>
-
-            <!-- Description Text -->
-            <div class="max-w-4xl mx-auto mb-16">
-                <p class="text-lg text-gray-300 mb-6 leading-relaxed">
-                    Rorena Tours and Safaris was established to increase the number of people interested in visiting Uganda. Since then, we have expanded our itinerary to include Uganda, Rwanda, Democratic Republic of Congo (D.R.C), Tanzania and Kenya.
-                </p>
-                <p class="text-lg text-gray-300 leading-relaxed">
-                    Rorena Tours and Safaris is a small-medium sized equipped, experienced, locally owned tours and safari company based in Kampala, Uganda. We offer quality, exceptional, affordable, budget, deluxe and luxury or highland tours to Uganda and the entire of East African countries with a personal touch.
-                </p>
-            </div>
-
-            <!-- Statistics Section -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-3xl mx-auto">
-                <div class="text-center">
-                    <div class="text-6xl md:text-7xl font-bold text-white mb-4 stat-counter" data-value="768">0</div>
-                    <div class="text-xl text-gray-300">Tours across East Africa</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-6xl md:text-7xl font-bold text-white mb-4 stat-counter" data-value="1315">0</div>
-                    <div class="text-xl text-gray-300">Happy Customers</div>
+            <!-- Mobile Menu -->
+            <div x-show="open" x-transition class="lg:hidden bg-white/95 backdrop-blur-sm mt-2 rounded-lg">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="/" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Home</a>
+                    <a href="/tours" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Tours</a>
+                    <a href="/booking" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Booking</a>
+                    <a href="/destinations" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Destination</a>
+                    <a href="/about" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">About</a>
+                    <a href="/contact" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Contact</a>
+                    <a href="/faqs" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">FAQs</a>
+                    <a href="/gallery" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Gallery</a>
+                    <a href="/blog" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Blog</a>
+                    <a href="/services" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Our Services</a>
+                    <a href="/shop" class="block px-3 py-2 text-green-600 bg-green-50 rounded transition-colors">Shop</a>
                 </div>
             </div>
         </div>
-    </section>
+    </nav>
 
-    <!-- Contact Form Section -->
-    <section class="scroll-section relative">
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div class="max-w-md mx-auto">
-                <div class="contact-form rounded-lg shadow-xl p-6">
-                    <div class="text-center mb-6">
-                        <h2 class="text-2xl font-bold mb-2 text-white">Get In Touch With Us</h2>
-                        <p class="text-sm text-gray-300">By booking your tour now</p>
-                    </div>
-                    <form class="space-y-4">
-                        <div>
-                            <label for="fullName" class="block text-sm font-medium form-label mb-1">Full Name</label>
-                            <input type="text" id="fullName" class="w-full px-3 py-2 form-input rounded-md text-sm" placeholder="John Doe">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium form-label mb-1">Email Address</label>
-                            <input type="email" id="email" class="w-full px-3 py-2 form-input rounded-md text-sm" placeholder="sample@yourcompany.com">
-                        </div>
-                        <div>
-                            <label for="phone" class="block text-sm font-medium form-label mb-1">Phone Number</label>
-                            <input type="tel" id="phone" class="w-full px-3 py-2 form-input rounded-md text-sm">
-                        </div>
-                        <div>
-                            <label for="interested" class="block text-sm font-medium form-label mb-1">Interested in</label>
-                            <select id="interested" class="w-full px-3 py-2 form-input rounded-md text-sm">
-                                <option>Serengeti National Park tour</option>
-                                <option>Kilimanjaro Trek</option>
-                                <option>Ngorongoro Crater Safari</option>
-                                <option>Lake Victoria Experience</option>
-                                <option>Custom Safari Package</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="persons" class="block text-sm font-medium form-label mb-1">Number of Person</label>
-                            <input type="number" id="persons" min="1" class="w-full px-3 py-2 form-input rounded-md text-sm">
-                        </div>
-                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition-colors text-sm">
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Main Content (Livewire Component) -->
+    {{ $slot }}
 
-    <!-- Team Section -->
-    <section class="scroll-section relative team-section">
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-green-400">Meet Our Team</h2>
-                <p>Experience a new adventure with expert in one place</p>
-            </div>
-            <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-8">
-                <div class="team-member text-center">
-                    <div class="relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="John Joy" class="w-32 h-32 rounded-full mx-auto mb-4">
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">John Opio</h3>
-                    <p class="text-green-400 mb-3">CEO</p>
-                </div>
-                <div class="team-member text-center">
-                    <div class="relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b47c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Jessica Namono" class="w-32 h-32 rounded-full mx-auto mb-4">
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Jessica Among</h3>
-                    <p class="text-green-400 mb-3">Tour Expert</p>
-                </div>
-                <div class="team-member text-center">
-                    <div class="relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Lawrence Nyakaire" class="w-32 h-32 rounded-full mx-auto mb-4">
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Douglas Atuhaire</h3>
-                    <p class="text-green-400 mb-3">Tour Guide</p>
-                </div>
-                <div class="team-member text-center">
-                    <div class="relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Hussein Onzigakir" class="w-32 h-32 rounded-full mx-auto mb-4">
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Hassan Cheptegei</h3>
-                    <p class="text-green-400 mb-3">Head of Transport</p>
-                </div>
-                <div class="team-member text-center">
-                    <div class="relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b47c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Josephine Nabinwa" class="w-32 h-32 rounded-full mx-auto mb-4">
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Jane Nankabirwa</h3>
-                    <p class="text-green-400 mb-3">Customer Support</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-<!-- Footer -->
+    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -388,7 +242,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
-                        <span x-show="expanded" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                        <span x-show="expanded" x-transition>
                             We offer quality, exceptional, affordable, bespoke, deluxe and luxury of highest tours to Uganda and the entire of East African countries with a personal touch. We organize authentic individual as well as group tours.
                         </span>
                     </p>
@@ -476,46 +330,17 @@
         </div>
     </footer>
 
+    @livewireScripts
+
     <script>
-        // Statistics counter animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const stats = document.querySelectorAll('.stat-counter');
-            const statsObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const stat = entry.target;
-                        const finalValue = parseInt(stat.dataset.value);
-                        let currentValue = 0;
-                        const increment = finalValue / 100;
-                        const duration = 2000; // 2 seconds
-                        const stepTime = duration / 100;
-
-                        const counter = setInterval(() => {
-                            currentValue += increment;
-                            if (currentValue >= finalValue) {
-                                stat.textContent = finalValue.toLocaleString();
-                                clearInterval(counter);
-                            } else {
-                                stat.textContent = Math.floor(currentValue).toLocaleString();
-                            }
-                        }, stepTime);
-
-                        statsObserver.unobserve(stat);
-                    }
-                });
-            });
-
-            stats.forEach(stat => statsObserver.observe(stat));
-
-            // Navigation scroll effect
-            const nav = document.querySelector('nav');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 100) {
-                    nav.classList.add('backdrop-blur-lg', 'bg-black/80');
-                } else {
-                    nav.classList.remove('backdrop-blur-lg', 'bg-black/80');
-                }
-            });
+        // Navigation scroll effect
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                nav.classList.add('backdrop-blur-lg', 'bg-black/80');
+            } else {
+                nav.classList.remove('backdrop-blur-lg', 'bg-black/80');
+            }
         });
     </script>
 </body>

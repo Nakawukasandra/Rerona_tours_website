@@ -1,235 +1,243 @@
 <div>
-    <div class="container mx-auto px-4 py-8">
-        <div class="max-w-6xl mx-auto">
-            <!-- Hero Section -->
-            <div class="text-center mb-12">
-                <h1 class="text-5xl font-bold text-gray-800 mb-4">{{ $aboutUs->title ?? 'About Rorena Tours' }}</h1>
-                @if($aboutUs->subtitle)
-                    <p class="text-xl text-gray-600 mb-6">{{ $aboutUs->subtitle }}</p>
-                @endif
+    <!-- Hero Section -->
+    <section class="relative h-screen">
+        <!-- Hero Background Image -->
+        <div class="absolute inset-0">
+            <img src="{{ $this->getMainImageUrl() }}" alt="{{ $aboutUs->title ?? 'About Us' }}" class="w-full h-full object-cover">
+        </div>
+        <!-- Overlay -->
+        <div class="absolute inset-0 hero-overlay"></div>
 
-                @if($aboutUs->main_image_url)
-                    <div class="relative mx-auto max-w-4xl mb-8">
-                        <img src="{{ $aboutUs->main_image_url }}"
-                             alt="{{ $aboutUs->title }}"
-                             class="w-full h-96 object-cover rounded-lg shadow-lg">
-                        <div class="absolute inset-0 bg-black bg-opacity-30 rounded-lg"></div>
-                    </div>
-                @endif
+        <!-- Hero Content -->
+        <div class="relative z-10 flex items-center justify-center h-full">
+            <div class="text-center text-white max-w-4xl mx-auto px-4">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    {{ $aboutUs->title ?? 'Making it real' }}
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+                    {{ $aboutUs->subtitle ?? 'We are the leading tours and safari company giving you an exceptionally new experience' }}
+                </p>
             </div>
+        </div>
+    </section>
 
-            <!-- Description Section -->
-            @if($aboutUs->description)
-                <div class="text-center mb-16">
-                    <div class="prose prose-lg mx-auto">
-                        <p class="text-lg text-gray-600 leading-relaxed">
-                            {!! nl2br(e($aboutUs->description)) !!}
-                        </p>
-                    </div>
-                </div>
+    <!-- Main Content Section -->
+    <section class="relative min-h-screen">
+        <div class="absolute inset-0 bg-black"></div>
+        <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+            <!-- Main Heading -->
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-12 leading-tight">
+                The adventure you will have is a<br>
+                life time memory that will<br>
+                make you want more
+            </h2>
+
+            <!-- Description Text -->
+            @if(isset($aboutUs->description) && $aboutUs->description)
+            <div class="max-w-4xl mx-auto mb-16">
+                <p class="text-lg text-gray-300 mb-6 leading-relaxed">
+                    {{ $aboutUs->description }}
+                </p>
+            </div>
+            @else
+            <div class="max-w-4xl mx-auto mb-16">
+                <p class="text-lg text-gray-300 mb-6 leading-relaxed">
+                    Rorena Tours and Safaris was established to increase the number of people interested in visiting Uganda. Since then, we have expanded our itinerary to include Uganda, Rwanda, Democratic Republic of Congo (D.R.C), Tanzania and Kenya.
+                </p>
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    Rorena Tours and Safaris is a small-medium sized equipped, experienced, locally owned tours and safari company based in Kampala, Uganda. We offer quality, exceptional, affordable, budget, deluxe and luxury or highland tours to Uganda and the entire of East African countries with a personal touch.
+                </p>
+            </div>
             @endif
 
             <!-- Statistics Section -->
-            @php
-                $stats = $aboutUs->stats;
-            @endphp
-            @if(array_sum($stats) > 0)
-                <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16 px-8 rounded-lg mb-16">
-                    <h2 class="text-3xl font-bold text-center mb-12">Our Achievements</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        @if($stats['years_experience'] > 0)
-                            <div class="text-center">
-                                <div class="text-4xl font-bold mb-2">{{ $stats['years_experience'] }}+</div>
-                                <div class="text-blue-100">Years Experience</div>
-                            </div>
-                        @endif
-
-                        @if($stats['happy_clients'] > 0)
-                            <div class="text-center">
-                                <div class="text-4xl font-bold mb-2">{{ number_format($stats['happy_clients']) }}+</div>
-                                <div class="text-blue-100">Happy Clients</div>
-                            </div>
-                        @endif
-
-                        @if($stats['tours_completed'] > 0)
-                            <div class="text-center">
-                                <div class="text-4xl font-bold mb-2">{{ number_format($stats['tours_completed']) }}+</div>
-                                <div class="text-blue-100">Tours Completed</div>
-                            </div>
-                        @endif
-
-                        @if($stats['destinations'] > 0)
-                            <div class="text-center">
-                                <div class="text-4xl font-bold mb-2">{{ $stats['destinations'] }}+</div>
-                                <div class="text-blue-100">Destinations</div>
-                            </div>
-                        @endif
-                    </div>
+            @if($statistics)
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-3xl mx-auto">
+                @if(isset($statistics['tours_completed']))
+                <div class="text-center">
+                    <div class="text-6xl md:text-7xl font-bold text-white mb-4 stat-counter" data-value="{{ $statistics['tours_completed'] }}">0</div>
+                    <div class="text-xl text-gray-300">Tours across East Africa</div>
                 </div>
+                @endif
+                @if(isset($statistics['happy_customers']))
+                <div class="text-center">
+                    <div class="text-6xl md:text-7xl font-bold text-white mb-4 stat-counter" data-value="{{ $statistics['happy_customers'] }}">0</div>
+                    <div class="text-xl text-gray-300">Happy Customers</div>
+                </div>
+                @endif
+            </div>
             @endif
+        </div>
+    </section>
 
-            <!-- Mission & Vision Section -->
-            @if($aboutUs->mission || $aboutUs->vision)
-                <div class="grid md:grid-cols-2 gap-8 mb-16">
-                    @if($aboutUs->mission)
-                        <div class="bg-white p-8 rounded-lg shadow-lg border-l-4 border-blue-500">
-                            <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                                <svg class="w-8 h-8 text-blue-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                Our Mission
-                            </h3>
-                            <p class="text-gray-600 leading-relaxed">{!! nl2br(e($aboutUs->mission)) !!}</p>
-                        </div>
+    <!-- Contact Form Section -->
+    <section class="scroll-section relative">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="max-w-md mx-auto">
+                <div class="contact-form rounded-lg shadow-xl p-6">
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl font-bold mb-2 text-white">Get In Touch With Us</h2>
+                        <p class="text-sm text-gray-300">By booking your tour now</p>
+                    </div>
+
+                    <!-- Success Message -->
+                    @if($showSuccess)
+                    <div class="bg-green-600 text-white p-3 rounded-md mb-4 text-center relative">
+                        <button wire:click="hideSuccess" type="button" class="absolute top-2 right-2 text-white hover:text-gray-200 transition-colors" aria-label="Close">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                        Thank you! We'll contact you soon.
+                    </div>
                     @endif
 
-                    @if($aboutUs->vision)
-                        <div class="bg-white p-8 rounded-lg shadow-lg border-l-4 border-purple-500">
-                            <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                                <svg class="w-8 h-8 text-purple-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"/>
-                                </svg>
-                                Our Vision
-                            </h3>
-                            <p class="text-gray-600 leading-relaxed">{!! nl2br(e($aboutUs->vision)) !!}</p>
-                        </div>
+                    <!-- Error Message -->
+                    @if($showError && $errorMessage)
+                    <div class="bg-red-600 text-white p-3 rounded-md mb-4 relative">
+                        <button wire:click="hideError" type="button" class="absolute top-2 right-2 text-white hover:text-gray-200 transition-colors" aria-label="Close">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                        <div class="text-sm">{{ $errorMessage }}</div>
+                    </div>
                     @endif
-                </div>
-            @endif
 
-            <!-- Company Values Section -->
-            @php
-                $values = $aboutUs->company_values;
-            @endphp
-            @if(!empty($values))
-                <div class="mb-16">
-                    <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">Our Values</h2>
-                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @foreach($values as $value)
-                            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg hover:shadow-lg transition duration-300">
-                                @if(is_array($value))
-                                    <h4 class="font-bold text-gray-800 mb-3">{{ $value['title'] ?? 'Our Value' }}</h4>
-                                    <p class="text-gray-600 text-sm">{{ $value['description'] ?? '' }}</p>
-                                @else
-                                    <p class="text-gray-700 font-medium">{{ $value }}</p>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
-            <!-- Gallery Section -->
-            @php
-                $galleryImages = $aboutUs->gallery_images_urls;
-            @endphp
-            @if(!empty($galleryImages))
-                <div class="mb-16">
-                    <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">Our Gallery</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        @foreach($galleryImages as $image)
-                            <div class="relative overflow-hidden rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                                <img src="{{ $image }}"
-                                     alt="Gallery Image"
-                                     class="w-full h-48 object-cover hover:scale-105 transition duration-300">
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
-            <!-- Contact Section -->
-            @php
-                $contactInfo = $aboutUs->contact_info;
-                $socialMedia = $aboutUs->social_media_links;
-            @endphp
-            @if($contactInfo['phone'] || $contactInfo['email'] || $contactInfo['address'])
-                <div class="bg-gray-50 p-8 rounded-lg mb-16">
-                    <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Get In Touch</h2>
-                    <div class="grid md:grid-cols-3 gap-8 text-center">
-                        @if($contactInfo['phone'])
-                            <div class="flex flex-col items-center">
-                                <svg class="w-8 h-8 text-blue-600 mb-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-                                </svg>
-                                <h4 class="font-semibold text-gray-800 mb-2">Phone</h4>
-                                <p class="text-gray-600">{{ $contactInfo['phone'] }}</p>
-                            </div>
-                        @endif
-
-                        @if($contactInfo['email'])
-                            <div class="flex flex-col items-center">
-                                <svg class="w-8 h-8 text-blue-600 mb-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-                                </svg>
-                                <h4 class="font-semibold text-gray-800 mb-2">Email</h4>
-                                <p class="text-gray-600">{{ $contactInfo['email'] }}</p>
-                            </div>
-                        @endif
-
-                        @if($contactInfo['address'])
-                            <div class="flex flex-col items-center">
-                                <svg class="w-8 h-8 text-blue-600 mb-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/>
-                                </svg>
-                                <h4 class="font-semibold text-gray-800 mb-2">Address</h4>
-                                <p class="text-gray-600">{{ $contactInfo['address'] }}</p>
-                            </div>
-                        @endif
-                    </div>
-
-                    <!-- Social Media Links -->
-                    @if(array_filter($socialMedia))
-                        <div class="text-center mt-8">
-                            <h4 class="font-semibold text-gray-800 mb-4">Follow Us</h4>
-                            <div class="flex justify-center space-x-4">
-                                @foreach($socialMedia as $platform => $url)
-                                    @if($url)
-                                        <a href="{{ $url }}"
-                                           target="_blank"
-                                           class="w-10 h-10 bg-gray-600 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition duration-300">
-                                            <span class="sr-only">{{ ucfirst($platform) }}</span>
-                                            @switch($platform)
-                                                @case('facebook')
-                                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                                                    @break
-                                                @case('twitter')
-                                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
-                                                    @break
-                                                @case('instagram')
-                                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 16.988c-2.289 0-4.149-1.86-4.149-4.149s1.86-4.149 4.149-4.149 4.149 1.86 4.149 4.149-1.86 4.149-4.149 4.149zm7.718 0c-2.289 0-4.149-1.86-4.149-4.149s1.86-4.149 4.149-4.149 4.149 1.86 4.149 4.149-1.86 4.149-4.149 4.149z"/></svg>
-                                                    @break
-                                                @default
-                                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12s5.374 12 12 12 12-5.373 12-12S18.626 0 12 0z"/></svg>
-                                            @endswitch
-                                        </a>
-                                    @endif
-                                @endforeach
-                            </div>
+                    <!-- Loading Indicator -->
+                    <div wire:loading wire:target="submitContact" class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-3 mb-4 rounded">
+                        <div class="flex items-center text-sm">
+                            <svg class="animate-spin h-4 w-4 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Sending your message...
                         </div>
-                    @endif
-                </div>
-            @endif
+                    </div>
 
-            <!-- Call to Action -->
-            <div class="text-center bg-gradient-to-r from-blue-600 to-purple-600 text-white p-12 rounded-lg">
-                <h3 class="text-3xl font-bold mb-4">Ready to Start Your Adventure?</h3>
-                <p class="text-xl mb-8 text-blue-100">
-                    Join thousands of satisfied travelers who have discovered the magic of authentic experiences with Rorena Tours.
-                </p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <a href="{{ route('tours') }}"
-                       class="bg-white text-blue-600 px-8 py-3 rounded-lg font-bold text-lg hover:bg-blue-50 transition duration-300">
-                        Browse Tours
-                    </a>
-                    <a href="{{ route('contact') }}"
-                       class="border-2 border-white text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-white hover:text-blue-600 transition duration-300">
-                        Contact Us
-                    </a>
+                    <form wire:submit.prevent="submitContact" class="space-y-4">
+                        <div>
+                            <label for="fullName" class="block text-sm font-medium form-label mb-1">Full Name</label>
+                            <input type="text" id="fullName" wire:model.blur="name" class="w-full px-3 py-2 form-input rounded-md text-sm @error('name') border-red-500 @enderror" placeholder="full name" required>
+                            @error('name') <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium form-label mb-1">Email Address</label>
+                            <input type="email" id="email" wire:model.blur="email" class="w-full px-3 py-2 form-input rounded-md text-sm @error('email') border-red-500 @enderror" placeholder="sample@yourcompany.com" required>
+                            @error('email') <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-medium form-label mb-1">Phone Number</label>
+                            <input type="tel" id="phone" wire:model.blur="phone" class="w-full px-3 py-2 form-input rounded-md text-sm @error('phone') border-red-500 @enderror" placeholder="+256 700 000000">
+                            @error('phone') <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div>
+                            <label for="interested" class="block text-sm font-medium form-label mb-1">Interested in</label>
+                            <select id="interested" wire:model="interest" class="w-full px-3 py-2 form-input rounded-md text-sm">
+                                <option>Serengeti National Park tour</option>
+                                <option>Kilimanjaro Trek</option>
+                                <option>Ngorongoro Crater Safari</option>
+                                <option>Lake Victoria Experience</option>
+                                <option>Custom Safari Package</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="persons" class="block text-sm font-medium form-label mb-1">Number of Person</label>
+                            <input type="number" id="persons" wire:model.blur="persons" min="1" max="50" class="w-full px-3 py-2 form-input rounded-md text-sm @error('persons') border-red-500 @enderror" required>
+                            @error('persons') <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
+                        </div>
+
+                        <button type="submit" wire:loading.attr="disabled" class="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded-md transition-colors text-sm">
+                            <span wire:loading.remove wire:target="submitContact">Send Message</span>
+                            <span wire:loading wire:target="submitContact">Sending...</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="scroll-section relative team-section">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-green-400">Meet Our Team</h2>
+                <p>Experience a new adventure with expert in one place</p>
+            </div>
+            <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-8">
+                <div class="team-member text-center">
+                    <div class="relative mb-4">
+                        <img src="https://api.dicebear.com/7.x/personas/svg?seed=JohnOpio&backgroundColor=22c55e" alt="John Opio" class="w-32 h-32 rounded-full mx-auto mb-4 bg-green-100">
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">John Opio</h3>
+                    <p class="text-green-400 mb-3">CEO</p>
+                </div>
+                <div class="team-member text-center">
+                    <div class="relative mb-4">
+                        <img src="https://api.dicebear.com/7.x/personas/svg?seed=JessicaAmong&backgroundColor=34d399" alt="Jessica Among" class="w-32 h-32 rounded-full mx-auto mb-4 bg-green-100">
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Jessica Among</h3>
+                    <p class="text-green-400 mb-3">Tour Expert</p>
+                </div>
+                <div class="team-member text-center">
+                    <div class="relative mb-4">
+                        <img src="https://api.dicebear.com/7.x/personas/svg?seed=DouglasAtuhaire&backgroundColor=4ade80" alt="Douglas Atuhaire" class="w-32 h-32 rounded-full mx-auto mb-4 bg-green-100">
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Douglas Atuhaire</h3>
+                    <p class="text-green-400 mb-3">Tour Guide</p>
+                </div>
+                <div class="team-member text-center">
+                    <div class="relative mb-4">
+                        <img src="https://api.dicebear.com/7.x/personas/svg?seed=HassanCheptegei&backgroundColor=16a34a" alt="Hassan Cheptegei" class="w-32 h-32 rounded-full mx-auto mb-4 bg-green-100">
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Hassan Cheptegei</h3>
+                    <p class="text-green-400 mb-3">Head of Transport</p>
+                </div>
+                <div class="team-member text-center">
+                    <div class="relative mb-4">
+                        <img src="https://api.dicebear.com/7.x/personas/svg?seed=JaneNankabirwa&backgroundColor=15803d" alt="Jane Nankabirwa" class="w-32 h-32 rounded-full mx-auto mb-4 bg-green-100">
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Jane Nankabirwa</h3>
+                    <p class="text-green-400 mb-3">Customer Support</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Statistics counter animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const stats = document.querySelectorAll('.stat-counter');
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const stat = entry.target;
+                        const finalValue = parseInt(stat.dataset.value);
+                        let currentValue = 0;
+                        const increment = finalValue / 100;
+                        const duration = 2000;
+                        const stepTime = duration / 100;
+
+                        const counter = setInterval(() => {
+                            currentValue += increment;
+                            if (currentValue >= finalValue) {
+                                stat.textContent = finalValue.toLocaleString();
+                                clearInterval(counter);
+                            } else {
+                                stat.textContent = Math.floor(currentValue).toLocaleString();
+                            }
+                        }, stepTime);
+
+                        statsObserver.unobserve(stat);
+                    }
+                });
+            });
+
+            stats.forEach(stat => statsObserver.observe(stat));
+        });
+    </script>
 </div>

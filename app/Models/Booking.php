@@ -12,6 +12,7 @@ class Booking extends Model
     use HasFactory;
 
     protected $primaryKey = 'booking_id';
+    public $incrementing = true;
 
     protected $fillable = [
         'user_id',
@@ -31,36 +32,38 @@ class Booking extends Model
         'total_amount' => 'decimal:2',
         'paid_amount' => 'decimal:2',
         'pending_amount' => 'decimal:2',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     // Relationships
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function schedule()
+    public function schedule(): BelongsTo
     {
-        return $this->belongsTo(Schedule::class);
+        return $this->belongsTo(TourSchedule::class, 'schedule_id', 'schedule_id');
     }
 
-    public function passengers()
+    public function passengers(): HasMany
     {
         return $this->hasMany(Passenger::class, 'booking_id', 'booking_id');
     }
 
-    public function payments()
+    public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'booking_id', 'booking_id');
     }
 
     // Accessors
-    public function getBalanceAttribute()
+    public function getBalanceAttribute(): float
     {
         return $this->total_amount - $this->paid_amount;
     }
 
-    public function getIsFullyPaidAttribute()
+    public function getIsFullyPaidAttribute(): bool
     {
         return $this->paid_amount >= $this->total_amount;
     }
@@ -82,7 +85,7 @@ class Booking extends Model
     }
 
     // Mutators
-    public function setPendingAmountAttribute($value)
+    public function setPendingAmountAttribute($value): void
     {
         $this->attributes['pending_amount'] = $this->total_amount - $this->paid_amount;
     }

@@ -55,11 +55,16 @@
         .main-content::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
+        /* Backdrop blur effect for mobile menu */
+        .backdrop-blur-sm {
+            backdrop-filter: blur(4px);
+        }
     </style>
 </head>
-<body class="font-sans antialiased bg-gray-50">
-    <!-- Navigation -->
-    <nav class="relative z-50 bg-white shadow-sm" x-data="{ open: false }">
+<body class="font-sans antialiased bg-gray-50" x-data="{ open: false }">
+    <!-- Navigation Bar -->
+    <nav class="relative z-50 bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center">
@@ -69,19 +74,20 @@
                 </div>
 
                 <div class="hidden lg:flex items-center space-x-6">
-                    <a href="/" class="text-blue-600 hover:text-blue-800 px-3 py-2 font-medium transition-colors">Home</a>
-                    <a href="/tours" class="text-blue-600 hover:text-blue-800 px-3 py-2 font-medium transition-colors">Tours</a>
-                    <a href="/booking" class="text-blue-800 px-3 py-2 font-medium transition-colors">Booking</a>
-                    <a href="/destinations" class="text-blue-600 hover:text-blue-800 px-3 py-2 font-medium transition-colors">Destination</a>
+                    <a href="/" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Home</a>
+                    <a href="/tours" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Tours</a>
+                    <a href="/booking" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Booking</a>
+                    <a href="/destinations" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Destination</a>
 
+                    <!-- Pages Dropdown -->
                     <div class="relative" x-data="{ dropdownOpen: false }">
-                        <button @click="dropdownOpen = !dropdownOpen" class="text-blue-600 hover:text-blue-800 px-3 py-2 font-medium flex items-center transition-colors">
+                        <button @click="dropdownOpen = !dropdownOpen" class="text-white hover:text-green-400 px-3 py-2 font-medium flex items-center transition-colors">
                             Pages
                             <svg class="ml-1 h-4 w-4 transform transition-transform" :class="dropdownOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
-                        <div x-show="dropdownOpen" @click.away="dropdownOpen = false" x-transition class="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg py-2 w-48 z-50">
+                        <div x-show="dropdownOpen" @click.away="dropdownOpen = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg py-2 w-48 z-50">
                             <a href="/about" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">About Us</a>
                             <a href="/contact" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Contact Us</a>
                             <a href="/faqs" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">FAQs</a>
@@ -89,27 +95,22 @@
                         </div>
                     </div>
 
-                    <a href="/blog" class="text-blue-600 hover:text-blue-800 px-3 py-2 font-medium transition-colors">Blog</a>
-                    <a href="/services" class="text-blue-600 hover:text-blue-800 px-3 py-2 font-medium transition-colors">Our Services</a>
-                    <a href="/shop" class="text-blue-600 hover:text-blue-800 px-3 py-2 font-medium transition-colors">Shop</a>
+                    <a href="/blog" class="text-green-400 px-3 py-2 font-medium transition-colors">Blog</a>
+                    <a href="/services" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Our Services</a>
+                    <a href="/shop" class="text-white hover:text-green-400 px-3 py-2 font-medium transition-colors">Shop</a>
 
-                    <button class="text-blue-600 hover:text-blue-800 p-2 transition-colors">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-
-                    <button class="text-blue-600 hover:text-blue-800 p-2 transition-colors relative">
+                    <!-- Cart Icon -->
+                    <button class="text-white hover:text-green-400 p-2 transition-colors relative">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m2.6 8L8 21h8M9 19a2 2 0 100-4 2 2 0 000 4zm10 0a2 2 0 100-4 2 2 0 000 4z"></path>
                         </svg>
-                        <span class="absolute -top-1 -right-1 bg-blue-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
+                        <span class="absolute -top-1 -right-1 bg-green-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
                     </button>
                 </div>
 
                 <!-- Mobile menu button -->
                 <div class="lg:hidden flex items-center">
-                    <button @click="open = !open" class="text-blue-600 hover:text-blue-800 transition-colors">
+                    <button @click="open = !open" class="text-white hover:text-green-400 transition-colors">
                         <svg class="h-6 w-6" :class="open ? 'hidden' : 'block'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
@@ -121,25 +122,25 @@
             </div>
 
             <!-- Mobile Menu -->
-            <div x-show="open" x-transition class="lg:hidden bg-white/95 backdrop-blur-sm mt-2 rounded-lg">
+            <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-1" class="lg:hidden bg-white/95 backdrop-blur-sm mt-2 rounded-lg">
                 <div class="px-2 pt-2 pb-3 space-y-1">
-                    <a href="/" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">Home</a>
-                    <a href="/tours" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">Tours</a>
-                    <a href="/booking" class="block px-3 py-2 text-blue-800 bg-blue-50 rounded transition-colors">Booking</a>
-                    <a href="/destinations" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">Destination</a>
-                    <a href="/about" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">About</a>
-                    <a href="/contact" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">Contact</a>
-                    <a href="/faqs" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">FAQs</a>
-                    <a href="/gallery" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">Gallery</a>
-                    <a href="/blog" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">Blog</a>
-                    <a href="/services" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">Our Services</a>
-                    <a href="/shop" class="block px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors">Shop</a>
+                    <a href="/" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Home</a>
+                    <a href="/tours" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Tours</a>
+                    <a href="/booking" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Booking</a>
+                    <a href="/destinations" class="block px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded transition-colors">Destination</a>
+                    <a href="/about" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">About</a>
+                    <a href="/contact" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Contact</a>
+                    <a href="/faqs" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">FAQs</a>
+                    <a href="/gallery" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Gallery</a>
+                    <a href="/blog" class="block px-3 py-2 text-green-600 bg-green-50 rounded transition-colors">Blog</a>
+                    <a href="/services" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Our Services</a>
+                    <a href="/shop" class="block px-3 py-2 text-gray-700 hover:text-green-400 hover:bg-green-50 rounded transition-colors">Shop</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section - Separate from content -->
+    <!-- Header Section -->
     <div class="bg-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <header class="text-center">
@@ -233,7 +234,7 @@
                             </p>
                         </div>
 
-                        <!-- 7. Ngorongoro -->
+                        <!-- 7-10 More Parks -->
                         <div class="border-l-4 border-indigo-500 pl-6">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">7. Ngorongoro Conservation Area, Tanzania</h3>
                             <p class="text-gray-700 leading-relaxed">
@@ -243,7 +244,6 @@
                             </p>
                         </div>
 
-                        <!-- 8. Amboseli -->
                         <div class="border-l-4 border-pink-500 pl-6">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">8. Amboseli National Park, Kenya</h3>
                             <p class="text-gray-700 leading-relaxed">
@@ -252,7 +252,6 @@
                             </p>
                         </div>
 
-                        <!-- 9. Lake Nakuru -->
                         <div class="border-l-4 border-teal-500 pl-6">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">9. Lake Nakuru National Park, Kenya</h3>
                             <p class="text-gray-700 leading-relaxed">
@@ -261,7 +260,6 @@
                             </p>
                         </div>
 
-                        <!-- 10. Bwindi -->
                         <div class="border-l-4 border-emerald-500 pl-6">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">10. Bwindi Impenetrable National Park, Uganda</h3>
                             <p class="text-gray-700 leading-relaxed">
@@ -271,291 +269,19 @@
                         </div>
                     </div>
 
-                    <!-- Break Icon -->
-                    <div class="flex justify-center mb-12">
-                        <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
-                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Tourism Highlight Box -->
-                    <div class="bg-blue-50 p-8 rounded-lg mb-12 text-center">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">East Africa is home to an astonishing range of landscapes and biodiversity, ripe to explore for the adventurous at heart.</h2>
-                        <p class="text-gray-700 mb-6">
-                            Tourism in the East African region has many opportunities. While affording the travelers an impressive range of options in
-                            exploration and relaxation, the region presents incredible potential for investors across the tourism value chain. This includes
-                            investment opportunities in the tourism accommodation sub-sector, attraction sites, tour operations, and travel agents among
-                            others. These forms of investment require adequate human and financial resources which provide an opportunity for the
-                            formation of partnerships and joint ventures among the various tourism stakeholders in the region.
-                        </p>
-                        <p class="text-gray-700 mb-6">
-                            Tourism is one of the most significant sectors in all the economies of the EAC region. The sector generates an average of
-                            about 17% in export earnings and its contribution to GDP is quite substantial averaging at around 10%. It generates about 7%
-                            of employment in the region. Moreover, tourism has important linkages with other sectors of the economy including
-                            agriculture, manufacturing, insurance, and finance among others.
-                        </p>
-                        <div class="flex justify-center space-x-8 text-sm text-gray-600">
-                            <span># EAST AFRICA</span>
-                            <span># TRAVEL</span>
-                            <span># TOURS</span>
-                        </div>
-                    </div>
-
-                    <!-- Author Section -->
-                    <div class="bg-gray-50 p-6 rounded-lg mb-12">
-                        <div class="flex items-start space-x-4">
-                            <div class="flex-shrink-0">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
-                                     alt="George Kaine" class="w-16 h-16 rounded-full object-cover">
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 mb-1">POSTED BY</p>
-                                <h4 class="text-lg font-bold text-gray-900 mb-2">George Kaine</h4>
-                                <p class="text-gray-700 text-sm">
-                                    Owing to its socio-economic significance in the region, tourism is one of the key productive
-                                    sectors that have been identified for cooperation in EAC. Cooperation in the sector is provided
-                                    under Partner States undertook to develop a collective and coordinated approach to the
-                                    promotion and marketing of quality tourism.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- You might also like section -->
-                    <div class="mb-12">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-8">You might also like</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-white rounded-lg overflow-hidden shadow-lg">
-                                <img src="/images/trips/nile-source.jpg"
-                                     alt="Nile River" class="w-full h-48 object-cover">
-                                <div class="p-4">
-                                    <p class="text-xs text-gray-500 mb-2">SEPTEMBER 13, 2021</p>
-                                    <h4 class="font-bold text-gray-900 mb-2">
-                                        <a href="/blog/nile-source-lakes" class="hover:text-blue-600 transition-colors">
-                                            Explore the source of the Nile and Africa's biggest lake
-                                        </a>
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="bg-white rounded-lg overflow-hidden shadow-lg">
-                                <img src="/images/trips/visit-drc.jpg"
-                                     alt="DRC landscape" class="w-full h-48 object-cover">
-                                <div class="p-4">
-                                    <p class="text-xs text-gray-500 mb-2">SEPTEMBER 13, 2021</p>
-                                    <h4 class="font-bold text-gray-900 mb-2">
-                                        <a href="/blog/best-time-visit-drc" class="hover:text-blue-600 transition-colors">
-                                            The best time to visit the DRC
-                                        </a>
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="bg-white rounded-lg overflow-hidden shadow-lg">
-                                <img src="/images/trips/bwindi.jpg"
-                                     alt="Mountain gorillas" class="w-full h-48 object-cover">
-                                <div class="p-4">
-                                    <p class="text-xs text-gray-500 mb-2">SEPTEMBER 13, 2021</p>
-                                    <h4 class="font-bold text-gray-900 mb-2">
-                                        <a href="/blog/gorilla-trekking-guide" class="hover:text-blue-600 transition-colors">
-                                            East Africa Gorilla trekking Review / Guide
-                                        </a>
-                                    </h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sidebar -->
-            <div class="space-y-6">
-                <!-- Newsletter Card -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Newsletter</h3>
-                    <p class="text-gray-600 mb-4">Don't miss up a thing! Sign up to receive daily deals</p>
-                    <form class="space-y-3">
-                        <input type="email" placeholder="Your Email Address"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button type="submit"
-                                class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                            Subscribe
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Travel Tips Card -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6">Travel Tips</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg">
-                            <div class="flex-shrink-0">
-                                <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center">
-                                    <img src="/images/trips/east.png"alt="east african logo" class="w-16 h-16 rounded-full object-cover">
-                                </div>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-900 text-sm mb-1">
-                                    <a href="/blog/east-africa-guide" class="hover:text-blue-600">
-                                        A must know about East African countries
-                                    </a>
-                                </h4>
-                                <p class="text-xs text-gray-600">September 16, 2021</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
-                            <div class="flex-shrink-0">
-                                <div class="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center">
-                                    <img src="/images/trips/giraff.png"alt="giraff" class="w-16 h-16 rounded-full object-cover">
-                                </div>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-900 text-sm mb-1">
-                                    <a href="/blog/travel-destinations" class="hover:text-blue-600">
-                                        Find out where to go, stay and what to see
-                                    </a>
-                                </h4>
-                                <p class="text-xs text-gray-600">September 16, 2021</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
-                            <div class="flex-shrink-0">
-                                <div class="w-16 h-16 bg-green-400 rounded-full flex items-center justify-center">
-                                    <img src="/images/trips/people.png"alt="people" class="w-16 h-16 rounded-full object-cover">
-                                </div>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-900 text-sm mb-1">
-                                    <a href="/blog/beginners-travel-guide" class="hover:text-blue-600">
-                                        Beginners Travel Guide
-                                    </a>
-                                </h4>
-                                <p class="text-xs text-gray-600">September 16, 2021</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Gallery Card -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6">Gallery</h3>
-                    <div class="gallery-grid">
-                        <div class="gallery-item">
-                            <a href="/gallery">
-                                <img src="/images/gallery/nature1.jpg" alt="Safari wildlife">
-                            </a>
-                        </div>
-                        <div class="gallery-item">
-                            <a href="/gallery">
-                                <img src="/images/gallery/african.jpg" alt="African landscape">
-                            </a>
-                        </div>
-                        <div class="gallery-item">
-                            <a href="/gallery">
-                                <img src="/images/gallery/wild.jpg" alt="Wildlife photography">
-                            </a>
-                        </div>
-                        <div class="gallery-item">
-                            <a href="/gallery">
-                                <img src="/images/destinations/uganda-waterfall.jpg" alt="Mountain gorilla">
-                            </a>
-                        </div>
-                        <div class="gallery-item">
-                            <a href="/gallery">
-                                <img src="/images/gallery/safari.jpg" alt="Safari adventure">
-                            </a>
-                        </div>
-                        <div class="gallery-item">
-                            <a href="/gallery">
-                                <img src="/images/gallery/elephant.jpg" alt="African elephant">
-                            </a>
-                        </div>
-                        <div class="gallery-item">
-                            <a href="/gallery">
-                                <img src="/images/gallery/nature1.jpg" alt="Safari sunset">
-                            </a>
-                        </div>
-                        <div class="gallery-item">
-                            <a href="/gallery">
-                                <img src="/images/gallery/african.jpg" alt="African landscape">
-                            </a>
-                        </div>
-                        <div class="gallery-item">
-                            <a href="/gallery">
-                                <img src="/images/gallery/wild.jpg" alt="wildlife photogrphy">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Tours Card -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-6">Recent Tours</h3>
-                    <div class="space-y-4">
-                        <!-- 5 days around Rwanda -->
-                        <div class="relative overflow-hidden rounded-lg group cursor-pointer">
-                            <a href="/tours/rwanda-5-days">
-                                <img src="/images/trips/rwanda.png"alt="Rwanda Tour"
-                                     class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300">
-                                <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-4">
-                                    <div class="flex items-center justify-between text-white mb-2">
-                                        <div>
-                                            <p class="text-lg font-bold">$4,200</p>
-                                            <div class="flex text-yellow-400 text-sm">
-                                                <span>★★★★★</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h4 class="text-white font-semibold text-sm">5 days around Rwanda</h4>
-                                </div>
-                            </a>
-                        </div>
-
-                        <!-- 5 days in Kenya -->
-                        <div class="relative overflow-hidden rounded-lg group cursor-pointer">
-                            <a href="/tours/kenya-5-days">
-                                <img src="/images/trips/kenya.png"alt="Kenya Tour"
-                                     class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300">
-                                <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-4">
-                                    <div class="flex items-center justify-between text-white mb-2">
-                                        <div>
-                                            <p class="text-lg font-bold">$5,000</p>
-                                            <div class="flex text-yellow-400 text-sm">
-                                                <span>★★★★★</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h4 class="text-white font-semibold text-sm">5 days in Kenya</h4>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Comment Section -->
-                    <div class="mb-12">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Book Now</h3>
-                        <form class="space-y-6">
-                            <!-- Book Now Section -->
+                    <!-- Book Now Section -->
                     <div class="mb-12 bg-gradient-to-br from-green-800 to-green-900 rounded-lg p-8">
                         <h3 class="text-2xl font-bold text-white mb-6 text-center">Book Your East African Adventure</h3>
-                        <form id="bookingForm" class="space-y-6">
+                        <form class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <input type="text"
-                                           id="name"
-                                           name="name"
                                            placeholder="Full Name"
                                            required
                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent">
                                 </div>
                                 <div>
                                     <input type="email"
-                                           id="email"
-                                           name="email"
                                            placeholder="Email Address"
                                            required
                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent">
@@ -565,16 +291,11 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <input type="date"
-                                           id="bookingDate"
-                                           name="booking_date"
                                            placeholder="Preferred Travel Date"
-                                           min="<?= date('Y-m-d') ?>"
                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent">
                                 </div>
                                 <div>
                                     <input type="number"
-                                           id="numberOfPeople"
-                                           name="number_of_people"
                                            placeholder="Number of People"
                                            min="1"
                                            max="20"
@@ -585,9 +306,7 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <select id="tourPackage"
-                                            name="tour_package"
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent bg-white text-gray-600">
+                                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent bg-white text-gray-600">
                                         <option value="">Select Tour Package</option>
                                         <option value="serengeti-3days">Serengeti Safari - 3 Days ($800/person)</option>
                                         <option value="uganda-gorilla-5days">Uganda Gorilla Trek - 5 Days ($1200/person)</option>
@@ -599,9 +318,7 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <select id="accommodation"
-                                            name="accommodation_level"
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent bg-white text-gray-600">
+                                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent bg-white text-gray-600">
                                         <option value="">Accommodation Level</option>
                                         <option value="budget">Budget ($50-100/night)</option>
                                         <option value="mid-range">Mid-range ($100-300/night)</option>
@@ -612,9 +329,7 @@
                             </div>
 
                             <div>
-                                <textarea id="specialRequest"
-                                          name="special_request"
-                                          rows="4"
+                                <textarea rows="4"
                                           placeholder="Special requests, dietary requirements, accessibility needs, or specific preferences..."
                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent resize-none"></textarea>
                             </div>
@@ -639,12 +354,103 @@
                             </div>
                         </form>
                     </div>
-                </form>
+
+                    <!-- Tourism Highlight Box -->
+                    <div class="bg-blue-50 p-8 rounded-lg mb-12 text-center">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4">East Africa is home to an astonishing range of landscapes and biodiversity, ripe to explore for the adventurous at heart.</h2>
+                        <p class="text-gray-700 mb-6">
+                            Tourism in the East African region has many opportunities. While affording the travelers an impressive range of options in
+                            exploration and relaxation, the region presents incredible potential for investors across the tourism value chain.
+                        </p>
+                        <div class="flex justify-center space-x-8 text-sm text-gray-600">
+                            <span># EAST AFRICA</span>
+                            <span># TRAVEL</span>
+                            <span># TOURS</span>
+                        </div>
+                    </div>
+
+                    <!-- Author Section with Avatar -->
+                    <div class="bg-gray-50 p-6 rounded-lg mb-12">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <!-- Avatar with initials -->
+                                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                                    GK
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">POSTED BY</p>
+                                <h4 class="text-lg font-bold text-gray-900 mb-2">George Kaine</h4>
+                                <p class="text-gray-700 text-sm">
+                                    Owing to its socio-economic significance in the region, tourism is one of the key productive
+                                    sectors that have been identified for cooperation in EAC.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Newsletter Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Newsletter</h3>
+                    <p class="text-gray-600 mb-4">Don't miss up a thing! Sign up to receive daily deals</p>
+                    <form class="space-y-3">
+                        <input type="email" placeholder="Your Email Address"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button type="submit"
+                                class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Recent Tours Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Recent Tours</h3>
+                    <div class="space-y-4">
+                        <!-- Rwanda Tour -->
+                        <div class="relative overflow-hidden rounded-lg group cursor-pointer">
+                            <img src="/images/trips/rwanda.png" alt="Rwanda Tour"
+                                 class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-4">
+                                <div class="flex items-center justify-between text-white mb-2">
+                                    <div>
+                                        <p class="text-lg font-bold">$4,200</p>
+                                        <div class="flex text-yellow-400 text-sm">
+                                            <span>★★★★★</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="text-white font-semibold text-sm">5 days around Rwanda</h4>
+                            </div>
+                        </div>
+
+                        <!-- Kenya Tour -->
+                        <div class="relative overflow-hidden rounded-lg group cursor-pointer">
+                            <img src="/images/trips/kenya.png" alt="Kenya Tour"
+                                 class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-4">
+                                <div class="flex items-center justify-between text-white mb-2">
+                                    <div>
+                                        <p class="text-lg font-bold">$5,000</p>
+                                        <div class="flex text-yellow-400 text-sm">
+                                            <span>★★★★★</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="text-white font-semibold text-sm">5 days in Kenya</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-     <!-- Footer -->
+    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -752,22 +558,18 @@
     </footer>
 
     <script>
-        // Newsletter subscription
-        document.querySelector('form').addEventListener('submit', function(e) {
-            if (e.target.querySelector('input[type="email"]')) {
-                e.preventDefault();
-                alert('Thank you for subscribing to our newsletter!');
-                e.target.reset();
-            }
-        });
-
-        // Comment form submission
-        document.querySelector('.space-y-6').addEventListener('submit', function(e) {
-            if (e.target.querySelector('input[type="text"]')) {
-                e.preventDefault();
-                alert('Thank you for your comment! It will be reviewed before posting.');
-                this.reset();
-            }
+        // Form submission handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (this.querySelector('input[type="email"]')) {
+                        alert('Thank you for your inquiry! We will contact you within 24 hours.');
+                        this.reset();
+                    }
+                });
+            });
         });
     </script>
 </body>

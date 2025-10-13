@@ -6,9 +6,16 @@ use App\Models\Booking;
 use App\Models\Tour;
 use App\Models\TourSchedule;
 use App\Models\User;
+use App\Notifications\NewBookingNotification;
+use App\Mail\BookingNotification;
+use App\Mail\CustomerBookingConfirmation;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -103,12 +110,20 @@ class Index extends Component
     {
         $this->validate();
 
+        DB::beginTransaction();
+
         try {
+            // Check availability one more time
+            $schedule = TourSchedule::lockForUpdate()->find($this->schedule_id);
+            if (!$schedule || $schedule->available_slots < $this->number_of_people) {
+                throw new \Exception('Sorry, there are not enough available spots for this tour.');
+            }
+
             // Create or get user
             $user = $this->getOrCreateUser();
 
-            // Generate booking reference
-            $this->booking_reference = 'BK-' . strtoupper(Str::random(8));
+            // Generate unique booking reference
+            $this->booking_reference = $this->generateUniqueReference();
 
             // Create booking
             $booking = Booking::create([
@@ -125,24 +140,48 @@ class Index extends Component
             ]);
 
             // Update available slots in tour schedule
-            $schedule = TourSchedule::find($this->schedule_id);
-            if ($schedule) {
-                $schedule->available_slots = max(0, $schedule->available_slots - $this->number_of_people);
-                $schedule->save();
-            }
+            $schedule->available_slots = max(0, $schedule->available_slots - $this->number_of_people);
+            $schedule->save();
+
+            // Load relationships for notifications
+            $booking->load(['user', 'schedule.tour.destination']);
+
+            // Send notifications
+            $this->sendNotifications($booking);
+
+            DB::commit();
 
             $this->booking_submitted = true;
 
             // Flash success message
             session()->flash('message', 'Booking submitted successfully! Reference: ' . $this->booking_reference);
 
-            // Optionally send email notification here
-            // $this->sendBookingConfirmation($booking);
-
         } catch (\Exception $e) {
-            session()->flash('error', 'An error occurred while processing your booking. Please try again.');
-            \Log::error('Booking creation error: ' . $e->getMessage());
+            DB::rollback();
+
+            $errorMessage = $e->getMessage();
+            if (strpos($errorMessage, 'available spots') !== false) {
+                session()->flash('error', $errorMessage);
+            } else {
+                session()->flash('error', 'An error occurred while processing your booking. Please try again.');
+            }
+
+            Log::error('Booking creation error', [
+                'error' => $e->getMessage(),
+                'user_email' => $this->user_email,
+                'schedule_id' => $this->schedule_id,
+                'trace' => $e->getTraceAsString()
+            ]);
         }
+    }
+
+    private function generateUniqueReference(): string
+    {
+        do {
+            $reference = 'BK-' . strtoupper(Str::random(8));
+        } while (Booking::where('booking_reference', $reference)->exists());
+
+        return $reference;
     }
 
     private function getOrCreateUser()
@@ -163,9 +202,77 @@ class Index extends Component
                 'password' => bcrypt(Str::random(12)), // Random password
                 'email_verified_at' => now(),
             ]);
+        } else {
+            // Update existing user info if needed
+            $updated = false;
+            if (empty($user->phone) && !empty($this->user_phone)) {
+                $user->phone = $this->user_phone;
+                $updated = true;
+            }
+            if ($user->name !== $this->user_name) {
+                $user->name = $this->user_name;
+                $updated = true;
+            }
+            if ($updated) {
+                $user->save();
+            }
         }
 
         return $user;
+    }
+
+    private function sendNotifications(Booking $booking)
+    {
+        try {
+            // Send customer confirmation
+            Mail::to($booking->user->email)->send(new CustomerBookingConfirmation($booking));
+
+            // Get admin users and send notifications
+            $this->notifyAdmins($booking);
+
+            // Also send direct email to main admin
+            $adminEmail = config('mail.admin_email', 'admin@rorenatours.com');
+            if ($adminEmail) {
+                Mail::to($adminEmail)->send(new BookingNotification($booking));
+            }
+
+        } catch (\Exception $e) {
+            // Don't fail the booking if notifications fail
+            Log::error('Notification sending failed', [
+                'booking_id' => $booking->booking_id,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    private function notifyAdmins(Booking $booking)
+    {
+        // Option 1: If you have a role field in users table
+        $adminUsers = User::where('role', 'admin')->get();
+
+        // Option 2: If using Voyager roles, uncomment this:
+        // $adminUsers = User::whereHas('roles', function($query) {
+        //     $query->where('name', 'admin');
+        // })->get();
+
+        // Option 3: If no role system, use specific emails
+        if ($adminUsers->isEmpty()) {
+            $adminEmails = [
+                'admin@rorenatours.com',
+                'bookings@rorenatours.com'
+            ];
+
+            foreach ($adminEmails as $email) {
+                try {
+                    Mail::to($email)->send(new BookingNotification($booking));
+                } catch (\Exception $e) {
+                    Log::error("Failed to send admin email to {$email}: " . $e->getMessage());
+                }
+            }
+        } else {
+            // Send notifications to admin users
+            Notification::send($adminUsers, new NewBookingNotification($booking));
+        }
     }
 
     public function resetForm()
